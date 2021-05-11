@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+   <%- include("layouts/headTag") %> 
+  </head>
+  <body>
+    <div class="glass-container" id="glass">
+      <!-- header -->
+      <%- include("layouts/header")  %> 
+      <section class="mt-5">
+        <!-- type selector -->
+        <%- include("layouts/typeSelector") %>
+        <!-- search by pincode -->
+        <% if (type==="pincode") { %> 
+          <%- include("layouts/searchByPincode") %>
+        <% } %>
+        <!-- search by district -->
+        <% if (type==="district") { %>
+          <%- include("layouts/searchByDistrict") %>
+        <% } %>
+      </section>
+    </div>
+  </body>
+</html>

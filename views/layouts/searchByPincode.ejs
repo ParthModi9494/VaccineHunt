@@ -1,0 +1,36 @@
+<form class="animate__animated animate__fadeIn" action="/search?type=pincode" method="POST">
+  <div class="columns is-centered m-3">
+    <div class="field column is-half-desktop is-full-mobile">
+      <div class="control has-icons-right">
+        <input
+          class="input"
+          type="text"
+          name="pincode"
+          required
+          placeholder="Search by pincode"
+        />
+        <span class="icon is-right">
+          <img src="/images/bx-search-alt.svg"/>
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="m-3 is-flex is-justify-content-center is-align-items-center">
+    <p class="m-3">Age Group:</p>
+    <div class="control">
+      <label class="radio">
+        <input required type="radio" id="18" name="ageGroup" value="18" />
+        18-44
+      </label>
+      <label class="radio">
+        <input checked type="radio" id="45" name="ageGroup" value="45" />
+        45+
+      </label>
+    </div>
+  </div>
+
+  <div class="m-3 is-flex is-justify-content-center is-align-items-center">
+    <button class="button is-primary">Search Slots</button>
+  </div>
+</form>
