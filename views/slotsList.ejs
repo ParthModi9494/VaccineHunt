@@ -3,6 +3,8 @@
 
 <head>
   <%- include("layouts/headTag") %>
+    <link rel="stylesheet" href="https://unpkg.com/accordion-js@3.1.1/dist/accordion.min.css">
+    <script src="https://unpkg.com/accordion-js@3.1.1/dist/accordion.min.js"></script>
 </head>
 
 <body>
@@ -12,30 +14,98 @@
       <section class="mt-5">
         <!-- type selector -->
         <%- include("layouts/typeSelector") %>
-         <!-- search by pincode -->
-         <% if (type==="pincode") { %> 
-          <%- include("layouts/searchByPincode") %>
-        <% } %>
-        <!-- search by district -->
-        <% if (type==="district") { %>
-          <%- include("layouts/searchByDistrict") %>
-        <% } %>
-        <% if (slots && slots.length) { %>
-          <% slots.forEach(slot => { %>
-          <div class="card">
-            <div class="card-content">
-              <div class="content">
-          <p><%= slot.center_name %></p>
-              </div>
-            </div>
-          </div>
-          <br>
-          <% }) %>
-        <% } else { %>
-          <p class="has-text-danger has-text-centered">No Vaccination slots availabe for this Pincode as of now.</p>
-          <% } %>
+          <!-- search by pincode -->
+          <% if (type==="pincode" ) { %>
+            <%- include("layouts/searchByPincode") %>
+              <% } %>
+                <!-- search by district -->
+                <% if (type==="district" ) { %>
+                  <%- include("layouts/searchByDistrict") %>
+                    <% } %>
+                      <% if (centers && centers.length) { %>
+                        <ng-container class="columns is-multiline m-2">
+                          <p class="column is-full is-size-5 has-text-weight-bold has-text-centered">Slots available</p>
+                          <% centers.forEach(center=> { %>
+                            <ng-container class="column is-full">
+                            <button class="accordion">
+                              <%= center.date %> (<%= center.totalSlots %> Slots)
+                            </button>
+                            <div class="collapsible-panel">
+                              <div class="columns is-mobile is-multiline animate__animated animate__fadeIn">
+                                <% center.details.forEach(center=> { %>
+                                  <ng-container class="column is-half-desktop is-full-mobile p-5">
+                                    <div class="card">
+                                      <div class="card-content">
+                                        <div class="content columns is-mobile">
+                                          <div class="column is-8 is-flex is-flex-direction-column">
+                                            <span class="center-name">
+                                              <i class='bx bxs-map'></i>
+                                              <%= center.name %>
+                                            </span>
+                                            <span class="is-flex is-align-items-flex-start">
+                                              
+                                              <span class="address mt-2">
+                                                <%= center.address %>
+                                              </span>
+                                            </span>
+                                            <span class="district-state">
+                                              <%= center.district_name %>, <%= center.state_name %>, <%= center.pincode %>
+                                            </span>
+                                          </div>
+                                          <div class="column is-4">
+                                            <span
+                                              class="is-flex is-flex-direction-column is-align-items-center is-justify-content-center has-text-centered">
+                                              <span
+                                                class="capacity <% if(center.available_capacity > 10){ %> has-text-success <% }else { %> has-text-warning <% } %>">
+                                                <i class='bx bx-first-aid'></i> </i> <%= center.available_capacity %> Slots
+                                              </span>
+                                              <span class="vaccine">
+                                                <%= center.vaccine %> (<%= center.fee_type %>)
+                                              </span>
+                                              <span class="tag is-info m-2">
+                                                Age <%= center.min_age_limit %>+
+                                              </span>
+                                              
+                                            </span>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </ng-container>
+                                  <% }) %>
+                              </div>
+                            </div>
+                          </ng-container>
+                            <% }) %>
+                        </ng-container>
+                        <% } else { %>
+                          <p class="has-text-danger has-text-centered">
+                            Sorry! No Vaccination slots availabe for this Pincode as of now. Try later.
+                          </p>
+                          <% } %>
       </section>
   </div>
+  <script>
+    var acc = document.getElementsByClassName("accordion");
+    var i;
+
+    for (i = 0; i < acc.length; i++) {
+      acc[i].addEventListener("click", function () {
+        this.classList.toggle("active");
+        var panel = this.nextElementSibling;
+        if (panel.style.maxHeight) {
+          panel.style.maxHeight = null;
+        } else {
+          panel.style.maxHeight = panel.scrollHeight + "px";
+        }
+      });
+    }
+
+    const card = document.querySelector(".card");
+    card.addEventListener("click",()=>{
+      window.open("https://selfregistration.cowin.gov.in/","_blank");
+    })
+  </script>
 </body>
 
 </html>

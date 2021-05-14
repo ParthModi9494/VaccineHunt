@@ -1,15 +1,12 @@
 * {
   font-family: "Quicksand", sans-serif;
   box-sizing: border-box;
-  color: #00A2A5;
+  color: #215280;
 }
 
-body,
 html {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  width: 100%;
+  height: 100vh;
+  width: 100vw;
 }
 
 body {
@@ -19,10 +16,15 @@ body {
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-size: cover;
-  background-color: #00A2A5;
+  background-color: #00a2a5;
   display: flex;
   align-items: center;
   justify-content: center;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  overflow-y: scroll;
 }
 
 .brand {
@@ -40,6 +42,7 @@ body {
 .glass-container {
   width: 50%;
   height: 90%;
+  overflow-y: scroll;
   color: white;
   gap: 20px;
   border-radius: 10px;
@@ -49,6 +52,15 @@ body {
   border: 2px rgba(255, 255, 255, 0.4) solid;
   border-bottom: 2px rgba(40, 40, 40, 0.35) solid;
   border-right: 2px rgba(40, 40, 40, 0.35) solid;
+  /* hides the scrollbar */
+  overflow-y: scroll;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+/* hides the scrollbar */
+.glass-container::-webkit-scrollbar {
+  width: 0;
+  height: 0;
 }
 
 /* Mobile devices  */
@@ -75,3 +87,81 @@ body {
   }
 }
 
+.card:hover {
+  cursor: pointer;
+}
+
+.card .center-name {
+  display: flex;
+  align-items: center;
+  justify-content: left;
+}
+
+.card .center-name,
+.card .capacity {
+  font-size: 1rem;
+  font-weight: bold;
+  text-transform: capitalize;
+  color: #215280;
+}
+
+.card .address,
+.card .district-state {
+  font-size: 0.85rem;
+  color: black;
+  text-transform: capitalize;
+}
+
+.card .vaccine,
+.card .date {
+  font-size: 0.7rem;
+  color: black;
+  text-transform: capitalize;
+}
+
+.capacity.has-text-warning {
+  color: #ffbf00 !important;
+}
+
+.accordion {
+  background-color: #00a2a580;
+  color: white;
+  cursor: pointer;
+  padding: 0.6rem;
+  width: 100%;
+  border: none;
+  outline: none;
+  font-size: 1rem;
+  transition: 0.5s;
+  font-weight: bold;
+  border-radius: 5px 5px 0 0;
+}
+
+.card-content {
+  padding: 1rem;
+}
+.active,
+.accordion:hover {
+  background-color: #00a2a5;
+}
+
+.accordion:after {
+  content: "\002B";
+  color: white;
+  font-weight: bold;
+  float: right;
+  margin-left: 5px;
+  font-size: 20px;
+}
+
+.active:after {
+  content: "\2212";
+}
+
+.collapsible-panel {
+  border-radius: 0 0 5px 5px;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.2s ease-out;
+  background-color: rgba(0, 0, 0, 0.3);
+}
