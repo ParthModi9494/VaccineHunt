@@ -24,58 +24,60 @@
                     <% } %>
                       <% if (centers && centers.length) { %>
                         <ng-container class="columns is-multiline m-2">
-                          <p class="column is-full is-size-5 has-text-weight-bold has-text-centered">Slots available</p>
+                          <p class="column is-full is-size-5 has-text-weight-bold has-tet">Slots available</p>
                           <% centers.forEach(center=> { %>
                             <ng-container class="column is-full">
-                            <button class="accordion">
-                              <%= center.date %> (<%= center.totalSlots %> Slots)
-                            </button>
-                            <div class="collapsible-panel">
-                              <div class="columns is-mobile is-multiline animate__animated animate__fadeIn">
-                                <% center.details.forEach(center=> { %>
-                                  <ng-container class="column is-half-desktop is-full-mobile p-5">
-                                    <div class="card">
-                                      <div class="card-content">
-                                        <div class="content columns is-mobile">
-                                          <div class="column is-8 is-flex is-flex-direction-column">
-                                            <span class="center-name">
-                                              <i class='bx bxs-map'></i>
-                                              <%= center.name %>
-                                            </span>
-                                            <span class="is-flex is-align-items-flex-start">
-                                              
-                                              <span class="address mt-2">
-                                                <%= center.address %>
+                              <button class="accordion">
+                                <%= center.date %> (<%= center.totalSlots %> Slots)
+                              </button>
+                              <div class="collapsible-panel">
+                                <div class="columns is-mobile is-multiline animate__animated animate__fadeIn">
+                                  <% center.details.forEach(center=> { %>
+                                    <ng-container class="column is-half-desktop is-full-mobile p-5">
+                                      <div class="card">
+                                        <div class="card-content">
+                                          <div class="content columns is-mobile">
+                                            <div class="column is-8 is-flex is-flex-direction-column">
+                                              <span class="center-name">
+                                                <i class='bx bx-map bx-sm'></i>
+                                                <%= center.name %>
                                               </span>
-                                            </span>
-                                            <span class="district-state">
-                                              <%= center.district_name %>, <%= center.state_name %>, <%= center.pincode %>
-                                            </span>
-                                          </div>
-                                          <div class="column is-4">
-                                            <span
-                                              class="is-flex is-flex-direction-column is-align-items-center is-justify-content-center has-text-centered">
+                                              <span class="is-flex is-align-items-flex-start">
+
+                                                <span class="address mt-2">
+                                                  <%= center.address %>
+                                                </span>
+                                              </span>
+                                              <span class="district-state">
+                                                <%= center.district_name %>, <%= center.state_name %>, <%=
+                                                      center.pincode %>
+                                              </span>
+                                            </div>
+                                            <div class="column is-4">
                                               <span
-                                                class="capacity <% if(center.available_capacity > 10){ %> has-text-success <% }else { %> has-text-warning <% } %>">
-                                                <i class='bx bx-first-aid'></i> </i> <%= center.available_capacity %> Slots
+                                                class="is-flex is-flex-direction-column is-align-items-center is-justify-content-center has-text-centered">
+                                                <span
+                                                  class="capacity <% if(center.available_capacity > 10){ %> has-text-success <% }else { %> has-text-warning <% } %>">
+                                                  </i>
+                                                  <%= center.available_capacity %> Slots
+                                                </span>
+                                                <span class="vaccine">
+                                                  <%= center.vaccine %> (<%= center.fee_type %>)
+                                                </span>
+                                                <span class="tag is-info m-2">
+                                                  Age <%= center.min_age_limit %>+
+                                                </span>
+
                                               </span>
-                                              <span class="vaccine">
-                                                <%= center.vaccine %> (<%= center.fee_type %>)
-                                              </span>
-                                              <span class="tag is-info m-2">
-                                                Age <%= center.min_age_limit %>+
-                                              </span>
-                                              
-                                            </span>
+                                            </div>
                                           </div>
                                         </div>
                                       </div>
-                                    </div>
-                                  </ng-container>
-                                  <% }) %>
+                                    </ng-container>
+                                    <% }) %>
+                                </div>
                               </div>
-                            </div>
-                          </ng-container>
+                            </ng-container>
                             <% }) %>
                         </ng-container>
                         <% } else { %>
@@ -102,9 +104,36 @@
     }
 
     const card = document.querySelector(".card");
-    card.addEventListener("click",()=>{
-      window.open("https://selfregistration.cowin.gov.in/","_blank");
+    card.addEventListener("click", () => {
+      window.open("https://selfregistration.cowin.gov.in/", "_blank");
     })
+
+
+    const stateDropdown = document.querySelector("#state_dropdown");
+
+    if (stateDropdown) {
+      stateDropdown.addEventListener("change", (event) => {
+        fetch(`https://cdn-api.co-vin.in/api/v2/admin/location/districts/${event.target.value}`)
+          .then(function (response) {
+            return response.json();
+          })
+          .then(function (response) {
+            populateDistrictDropdown(response.districts);
+          });
+      });
+    }
+ 
+    populateDistrictDropdown = (districts) => {
+      var districtsDropdown = document.querySelector("#district_dropdown");
+      districtsDropdown.innerHTML = "";
+      districts.forEach(district => {
+        var newOption = document.createElement("option");
+        newOption.textContent = district.district_name;
+        newOption.value = district.district_id;
+        districtsDropdown.appendChild(newOption);
+      });
+    }
+
   </script>
 </body>
 

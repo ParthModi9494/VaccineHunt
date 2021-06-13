@@ -1,24 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-   <%- include("layouts/headTag") %> 
-  </head>
-  <body>
-    <div class="glass-container" id="glass">
-      <!-- header -->
-      <%- include("layouts/header")  %> 
+
+<head>
+  <%- include("layouts/headTag") %>
+</head>
+
+<body>
+  <div class="glass-container" id="glass">
+    <!-- header -->
+    <%- include("layouts/header") %>
       <section class="mt-5">
         <!-- type selector -->
         <%- include("layouts/typeSelector") %>
-        <!-- search by pincode -->
-        <% if (type==="pincode") { %> 
-          <%- include("layouts/searchByPincode") %>
-        <% } %>
-        <!-- search by district -->
-        <% if (type==="district") { %>
-          <%- include("layouts/searchByDistrict") %>
-        <% } %>
+          <!-- search by pincode -->
+          <% if (type==="pincode" ) { %>
+            <%- include("layouts/searchByPincode") %>
+              <% } %>
+                <!-- search by district -->
+                <% if (type==="district" ) { %>
+                  <%- include("layouts/searchByDistrict") %>
+                    <% } %>
       </section>
-    </div>
-  </body>
+  </div>
+
+  <script>
+    const stateDropdown = document.querySelector("#state_dropdown");
+
+    if (stateDropdown) {
+      stateDropdown.addEventListener("change", (event) => {
+        fetch(`https://cdn-api.co-vin.in/api/v2/admin/location/districts/${event.target.value}`)
+          .then(function (response) {
+            return response.json();
+          })
+          .then(function (response) {
+            populateDistrictDropdown(response.districts);
+          });
+      });
+    }
+
+    populateDistrictDropdown = (districts) => {
+      var districtsDropdown = document.querySelector("#district_dropdown");
+      districtsDropdown.innerHTML = "";
+      districts.forEach(district => {
+        var newOption = document.createElement("option");
+        newOption.textContent = district.district_name;
+        newOption.value = district.district_id;
+        districtsDropdown.appendChild(newOption);
+      });
+    }
+
+  </script>
+</body>
+
 </html>
